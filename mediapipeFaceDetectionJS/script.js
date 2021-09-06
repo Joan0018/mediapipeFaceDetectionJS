@@ -6,6 +6,7 @@ var start = new Date();
 var dateStart = start.getHours() + ":" + start.getMinutes() + ":" + start.getSeconds() + ":" + start.getMilliseconds();
 console.log("Start Time = "+ dateStart);
 
+
 function onResults(results) {
   canvasCtx.save();
   canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
@@ -29,8 +30,8 @@ function onResults(results) {
   console.log("End Time = "+ dateEnd);
 }
 
-const faceMesh = new FaceMesh({locateFile: (file) => {
-  return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
+const faceMesh = new FaceMesh({locateFile: (videoElement) => {
+  return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${videoElement}`;
 }});
 faceMesh.setOptions({
   maxNumFaces: 1,
@@ -39,11 +40,14 @@ faceMesh.setOptions({
 });
 faceMesh.onResults(onResults);
 
-const camera = new Camera(videoElement, {
-  onFrame: async () => {
-    await faceMesh.send({image: videoElement});
-  },
-  width: 1280,
-  height: 720
-});
-camera.start();
+
+faceMesh.send({image: videoElement});
+
+// const camera = new Camera(videoElement, {
+//   onFrame: async () => {
+//     await faceMesh.send({image: videoElement});
+//   },
+//   width: 1280,
+//   height: 720
+// });
+// camera.start();
